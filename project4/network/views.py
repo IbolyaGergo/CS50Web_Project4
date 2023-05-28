@@ -1,14 +1,28 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post
 
 
 def index(request):
+    
+
     return render(request, "network/index.html")
+
+def new_post(request):
+    if request.method == "POST":
+        # Get contents of post
+        body = request.POST["body"]
+        post = Post(
+            user=request.user,
+            body=body
+        )
+        post.save()
+        return HttpResponseRedirect(reverse("index"))
 
 
 def login_view(request):
