@@ -81,6 +81,10 @@ def register(request):
 
 def profile(request, user_id):
     profile = User.objects.get(pk=user_id)
+    posts = Post.objects.filter(user=profile)
+    posts = posts.order_by("-timestamp").all()
+
     return render(request, "network/profile.html", {
-        "profile": profile
+        "profile": profile,
+        "posts": posts
     })

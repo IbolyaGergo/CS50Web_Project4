@@ -1,8 +1,18 @@
 {% extends "network/layout.html" %}
 {% block body %}
-<h2>{{ profile.username}}</h2>
-<p>Followers: {{ profile.followers.count }}</p>
-<p>Following: {{ profile.following.count }}</p>
+<div class="container">
+    <div class="row no-gutters">
+        <div class="col-4">
+            <h2>{{ profile.username}}</h2>
+        </div>
+        <div class="col-4">
+            Followers: {{ profile.followers.count }}
+        </div>
+        <div class="col-4">
+            Following: {{ profile.following.count }}
+        </div>
+    </div>
+</div>
 {% if user != profile %}
     {% if profile in user.following.all %}
     <button class="btn btn-primary">Unfollow</button>
@@ -10,4 +20,15 @@
     <button class="btn btn-primary">Follow</button>
     {% endif %}
 {% endif %}
+{% for post in posts %}
+<div class="card">
+    <div class="card-body">
+            <h5 class="card-title"><a href="{% url 'profile' post.user.id %}">{{ post.user }}</a></h5>
+            <a href="" class="card-link">Edit</a>
+            <p class="card-text">{{ post.body }}</p>
+            <p class="card-text text-muted">Number of likes: {{ post.num_of_likes }}</p>
+            <p class="card-text text-muted">{{ post.timestamp|date:"F j, Y, g:i a" }}</p>
+        </div>
+    </div>
+{% endfor %}
 {% endblock %}
