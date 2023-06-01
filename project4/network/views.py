@@ -9,9 +9,12 @@ from .models import User, Post
 
 
 def index(request):
+    posts = Post.objects.all()
+    posts = posts.order_by("-timestamp").all()
     
-
-    return render(request, "network/index.html")
+    return render(request, "network/index.html", {
+        "posts": posts
+    })
 
 def new_post(request):
     if request.method == "POST":
