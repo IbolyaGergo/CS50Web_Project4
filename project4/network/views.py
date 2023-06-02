@@ -4,6 +4,7 @@ from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Post
 
@@ -79,12 +80,30 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+@csrf_exempt
 def profile(request, user_id):
     profile = User.objects.get(pk=user_id)
-    posts = Post.objects.filter(user=profile)
-    posts = posts.order_by("-timestamp").all()
+    
+    if request.method == "GET":
+        posts = Post.objects.filter(user=profile)
+        posts = posts.order_by("-timestamp").all()
 
-    return render(request, "network/profile.html", {
-        "profile": profile,
-        "posts": posts
-    })
+        return render(request, "network/profile.html", {
+            "profile": profile,
+            "posts": posts
+        })
+
+    if request.method == "PUT":
+        if profile in request.user.following.all():
+            request.user.following.remove(profile)
+        else:
+            request.user.following.add(profile)
+        print(request.user.following.all())
+        return HttpResponse(status=204)
+        # return HttpResponseRedirect(reverse("index"))
+        # return HttpResponseRedirect(reverse("profile"))
+
+        # return render(request, "network/profile.html", {
+        #     "profile": profile,
+        #     "posts": posts
+        # })
