@@ -17,6 +17,18 @@ def index(request):
         "posts": posts
     })
 
+def following(request):
+    # posts = Post.objects.filter(user=request.user.following).all()
+    all_posts = Post.objects.all().order_by("-timestamp").all()
+    posts = []
+    for post in all_posts:
+        if post.user in request.user.following.all():
+            posts.append(post)
+    
+    return render(request, "network/index.html", {
+        "posts": posts
+    })
+
 def new_post(request):
     if request.method == "POST":
         # Get contents of post
