@@ -13,6 +13,34 @@
         </form>
     </div>
 </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&#8249;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+        {% endif %}
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">
+                {{ page_obj.number }}
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&#8250;</a></li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
 {% for post in page_obj %}
 <div class="card">
     <div class="card-body">
@@ -24,7 +52,7 @@
         </div>
     </div>
 {% endfor %}
-<div class="pagination">
+<!-- <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
@@ -40,6 +68,34 @@
             <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
-</div>
+</div> -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&#8249;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+        {% endif %}
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">
+                {{ page_obj.number }}
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&#8250;</a></li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
 {% endif %}
 {% endblock %}
