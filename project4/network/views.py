@@ -1,4 +1,6 @@
 import json
+from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
@@ -12,11 +14,21 @@ from .models import User, Post
 def index(request):
     posts = Post.objects.all()
     posts = posts.order_by("-timestamp").all()
+    # Show 10 posts per page
+    paginator = Paginator(posts, 10)
+
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    title = "All Posts"
     
     return render(request, "network/index.html", {
-        "posts": posts
+        "posts": posts,
+        "title": title,
+        "page_obj": page_obj
     })
 
+@login_required
 def following(request):
     # posts = Post.objects.filter(user=request.user.following).all()
     all_posts = Post.objects.all().order_by("-timestamp").all()
@@ -25,8 +37,10 @@ def following(request):
         if post.user in request.user.following.all():
             posts.append(post)
     
+    title = "Following"
     return render(request, "network/index.html", {
-        "posts": posts
+        "posts": posts,
+        "title": title
     })
 
 def new_post(request):
