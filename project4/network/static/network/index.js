@@ -26,6 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
             element.parentElement.insertBefore(save_btn, post_body);
 
             save_btn.addEventListener('click', () => {
+                console.log(element.value);
+                const post_id = parseInt(element.value);
+                fetch(`/edit_post/${post_id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        post_body: textarea.value
+                    })
+                });
                 // Change the post to the edited post
                 post_body.innerHTML = textarea.value;
 

@@ -14,6 +14,7 @@ from .models import User, Post
 def index(request):
     posts = Post.objects.all()
     posts = posts.order_by("-timestamp").all()
+
     # Show 10 posts per page
     paginator = Paginator(posts, 10)
 
@@ -106,6 +107,7 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+
 @csrf_exempt
 def profile(request, user_id):
     profile = User.objects.get(pk=user_id)
@@ -126,10 +128,14 @@ def profile(request, user_id):
             request.user.following.add(profile)
         print(request.user.following.all())
         return HttpResponse(status=204)
-        # return HttpResponseRedirect(reverse("index"))
-        # return HttpResponseRedirect(reverse("profile"))
 
-        # return render(request, "network/profile.html", {
-        #     "profile": profile,
-        #     "posts": posts
-        # })
+
+@csrf_exempt
+def edit_post(request, post_id):
+    if request.method == "PUT":
+        post = Post.objects.get(pk=post_id)
+        data = json.loads(request.body)
+        if data.get("post_body") is not None:
+            post.body = data["post_body"]
+            post.save()
+        return HttpResponse(status=204)
