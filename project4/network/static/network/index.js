@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', event => {
         const element = event.target;
         if (element.className === 'edit') {
+
+            // Hide edit button
+            element.style.display = "none";
+
             // Create a textarea
             const textarea = document.createElement("TEXTAREA");
             textarea.className = "form-control";
@@ -39,6 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Show the edited post
                 post_body.style.display = 'block';
+
+                // Show edit button
+                element.style.display = "block";
 
                 // Remove textarea and save btn
                 element.parentElement.removeChild(save_btn);
