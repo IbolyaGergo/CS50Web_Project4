@@ -131,6 +131,7 @@ def profile(request, user_id):
 
 
 @csrf_exempt
+@login_required
 def edit_post(request, post_id):
     if request.method == "PUT":
         post = Post.objects.get(pk=post_id)
@@ -139,3 +140,18 @@ def edit_post(request, post_id):
             post.body = data["post_body"]
             post.save()
         return HttpResponse(status=204)
+
+@csrf_exempt
+@login_required
+def like_post(request, post_id):
+    if request.method == "PUT":
+        post = Post.objects.get(pk=post_id)
+
+        if request.user in post.likers.all():
+            post.likers.remove(request.user)
+        else:
+            post.likers.add(request.user)
+
+        return HttpResponse(status=204)
+        
+

@@ -45,12 +45,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 post_body.style.display = 'block';
 
                 // Show edit button
-                element.style.display = "block";
+                element.style.display = 'block';
 
                 // Remove textarea and save btn
                 element.parentElement.removeChild(save_btn);
                 element.parentElement.removeChild(textarea);
             });
+        } else if (element.className === 'fa fa-heart') {
+            // const post_id = parseInt(element.getAttribute('data-post_id'));
+            const post_id = parseInt(element.dataset.post_id);
+            console.log(post_id);
+            fetch(`/like_post/${post_id}`, {
+                method: 'PUT'
+            });
+
+            var num_of_likes = parseInt(element.parentElement.children[1].innerHTML);
+
+            if (element.style.color === 'red') {
+                element.style.color = 'grey';
+                num_of_likes--;
+            } else {
+                element.style.color = 'red';
+                num_of_likes++;
+            }
+            element.parentElement.children[1].innerHTML = num_of_likes;
+            // console.log(element.parentElement.children[1].innerHTML);
         }
     });
 });

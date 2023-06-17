@@ -51,7 +51,14 @@
             <button class="edit" value="{{ post.id }}">Edit</button>
         {% endif %}
         <p class="card-text">{{ post.body }}</p>
-        <p class="card-text text-muted">Number of likes: {{ post.num_of_likes }}</p>
+        <div class="card-text text-muted">
+            {% if user in post.likers.all %}
+                <i class="fa fa-heart" style="color: red;" data-post_id="{{ post.id }}"></i>
+            {% else %}
+                <i class="fa fa-heart" data-post_id="{{ post.id }}"></i>
+            {% endif %}
+            <span>{{ post.likers.count }}</span>
+        </div>
         <p class="card-text text-muted">{{ post.timestamp|date:"F j, Y, g:i a" }}</p>
     </div>
 </div>
